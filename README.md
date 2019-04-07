@@ -7,4 +7,3 @@
   +) run application:
      - ./main file_input_location file_output_location size_of_memory
      - example: ./main input.txt output.txt 10000
-
