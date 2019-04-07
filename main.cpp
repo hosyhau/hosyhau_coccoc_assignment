@@ -149,6 +149,7 @@ string getEntireTextFile(string inputFileName)
     file.open(inputFileName, ios::in| ios::binary);
     string input;
     file >> input;
+    file.close();
     return input;
 }
 
@@ -218,11 +219,10 @@ void processWholeDataInFile(char **argv)
     string delimiter = "\\n";
 
     string text;
-    string temp;
     bool isReadDone = false;
     int numberOfChunksFile = 1;
     long currentPositon = 0;
-    string result;
+
     if (sizeOfFile > limit)
     {
         while (currentPositon <= sizeOfFile-1 && isReadDone == false)
