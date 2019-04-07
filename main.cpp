@@ -76,71 +76,6 @@ void sortAndWrite(string *values, int size, int numberOfChunks)
     outputFile.close();
 }
 
-bool isEmptyFile(string inputFileName)
-{
-    ifstream inFile(inputFileName);
-    inFile.seekg(0, ios::end);
-    if (inFile.tellg() == 0)
-    {
-        inFile.close();
-        return true;
-    }
-    inFile.close();
-    return false;
-}
-
-bool validateArguments(char ** args)
-{
-    string inputFileName = args[1];
-    string outputFileName = args[2];
-    string ramLimit = args[3];
-
-    if (inputFileName.empty())
-    {
-        cout<<"input file name can not be not null or empty."<<endl;
-        return false;
-    }
-
-    if (isEmptyFile(inputFileName))
-    {
-        cout<<"File can not be empty."<<endl;
-        return false;
-    }
-
-    if (outputFileName.empty())
-    {
-        cout<<"output file name can not be not null or empty."<<endl;
-        return false;
-    }
-
-    if (ramLimit.empty())
-    {
-        cout<<"ram limit can not be null or empty."<<endl;
-        return false;
-    }
-    else
-    {
-        try
-        {
-            stringstream ss(ramLimit);
-            long ramValue;
-            ss>>ramValue;
-            if (ramValue <= 0)
-            {
-                cout << "ram limit must be greater than 0."<<endl;
-                return false;
-            }
-        }
-        catch(exception& e)
-        {
-            cout<<"ram limit can not casted to long value."<<endl;
-            return false;
-        }
-    }
-
-    return true;
-}
-
 string mergeAllFiles(int counter, string outputFileName)
 {
     priority_queue<pair<string, int>, vector<pair<string, int> >, Comparator> minHeap;
@@ -183,6 +118,19 @@ string mergeAllFiles(int counter, string outputFileName)
     delete[] handles;
 
     return outputFileName;
+}
+
+bool isEmptyFile(string inputFileName)
+{
+    ifstream inFile(inputFileName);
+    inFile.seekg(0, ios::end);
+    if (inFile.tellg() == 0)
+    {
+        inFile.close();
+        return true;
+    }
+    inFile.close();
+    return false;
 }
 
 long getSizeOfFile(string inFileName)
@@ -327,9 +275,60 @@ void processWholeDataInFile(char **argv)
     }
 
     if (numberOfChunksFile != 0)
-        mergeAllFiles(numberOfChunksFile, outputFileName);
+        cout<<"File output "<<mergeAllFiles(numberOfChunksFile, outputFileName)<<" is created successfully."<<endl;
 }
 
+bool validateArguments(char ** args)
+{
+    string inputFileName = args[1];
+    string outputFileName = args[2];
+    string ramLimit = args[3];
+
+    if (inputFileName.empty())
+    {
+        cout<<"input file name can not be not null or empty."<<endl;
+        return false;
+    }
+
+    if (isEmptyFile(inputFileName))
+    {
+        cout<<"File can not be empty."<<endl;
+        return false;
+    }
+
+    if (outputFileName.empty())
+    {
+        cout<<"output file name can not be not null or empty."<<endl;
+        return false;
+    }
+
+    if (ramLimit.empty())
+    {
+        cout<<"ram limit can not be null or empty."<<endl;
+        return false;
+    }
+    else
+    {
+        try
+        {
+            stringstream ss(ramLimit);
+            long ramValue;
+            ss>>ramValue;
+            if (ramValue <= 0)
+            {
+                cout << "ram limit must be greater than 0."<<endl;
+                return false;
+            }
+        }
+        catch(exception& e)
+        {
+            cout<<"ram limit can not casted to long value."<<endl;
+            return false;
+        }
+    }
+
+    return true;
+}
 
 int main(int argc, char** argv)
 {
